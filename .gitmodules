@@ -1,0 +1,3 @@
+[submodule "nrelay"]
+	path = nrelay
+	url = https://github.com/Extacy/nrelay
