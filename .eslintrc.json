@@ -17,18 +17,9 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "indent": [
-            "error",
-            4
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
+        "indent": [ "error", 4, { "SwitchCase": 1 } ],
+        "quotes": [ "error", "double" ],
+        "semi": [ "error", "always" ],
         "@typescript-eslint/explicit-member-accessibility": [
             "error",
             {
