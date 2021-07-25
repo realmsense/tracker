@@ -1,0 +1,28 @@
+{
+  "name": "nrelay-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "compile": "tsc - p.",
+    "lint": "eslint src --ext ts",
+    "docs": "typedoc --options ./typedoc.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Extacy/nrelay-project.git"
+  },
+  "author": "Extacy",
+  "license": "MIT",
+  "dependencies": {
+    "package.json": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^16.3.2",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.30.0",
+    "typedoc": "^0.21.4"
+  }
+}
