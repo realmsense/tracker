@@ -1,0 +1,106 @@
+{
+    "USEast2": {
+        "name": "USEast2",
+        "address": "52.87.248.5"
+    },
+    "EUEast": {
+        "name": "EUEast",
+        "address": "18.184.218.174"
+    },
+    "EUSouthWest": {
+        "name": "EUSouthWest",
+        "address": "35.180.67.120"
+    },
+    "EUNorth": {
+        "name": "EUNorth",
+        "address": "18.159.133.120"
+    },
+    "USEast": {
+        "name": "USEast",
+        "address": "54.234.226.24"
+    },
+    "USWest4": {
+        "name": "USWest4",
+        "address": "54.235.235.140"
+    },
+    "USEast3": {
+        "name": "USEast3",
+        "address": "3.86.254.40"
+    },
+    "EUWest2": {
+        "name": "EUWest2",
+        "address": "52.16.86.215"
+    },
+    "AsiaSouthEast": {
+        "name": "AsiaSouthEast",
+        "address": "3.0.147.127"
+    },
+    "USSouth3": {
+        "name": "USSouth3",
+        "address": "52.207.206.31"
+    },
+    "EUWest": {
+        "name": "EUWest",
+        "address": "15.237.60.223"
+    },
+    "USWest": {
+        "name": "USWest",
+        "address": "54.86.47.176"
+    },
+    "EUEast2": {
+        "name": "EUEast2",
+        "address": "18.192.23.224"
+    },
+    "USMidWest2": {
+        "name": "USMidWest2",
+        "address": "3.140.254.133"
+    },
+    "USSouth2": {
+        "name": "USSouth2",
+        "address": "35.175.143.80"
+    },
+    "USMidWest": {
+        "name": "USMidWest",
+        "address": "3.133.12.23"
+    },
+    "USWest2": {
+        "name": "USWest2",
+        "address": "54.89.254.12"
+    },
+    "AsiaEast": {
+        "name": "AsiaEast",
+        "address": "18.183.64.243"
+    },
+    "USSouth": {
+        "name": "USSouth",
+        "address": "3.82.126.16"
+    },
+    "USWest3": {
+        "name": "USWest3",
+        "address": "18.144.30.153"
+    },
+    "EUNorth2": {
+        "name": "EUNorth2",
+        "address": "18.184.202.127"
+    },
+    "USSouthWest": {
+        "name": "USSouthWest",
+        "address": "54.153.13.68"
+    },
+    "EUSouth": {
+        "name": "EUSouth",
+        "address": "35.180.73.63"
+    },
+    "USEast4": {
+        "name": "USEast4",
+        "address": "3.21.236.86"
+    },
+    "USNorthWest": {
+        "name": "USNorthWest",
+        "address": "34.238.176.119"
+    },
+    "Australia": {
+        "name": "Australia",
+        "address": "13.236.87.250"
+    }
+}

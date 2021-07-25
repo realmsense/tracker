@@ -16,7 +16,7 @@
   "author": "Extacy",
   "license": "MIT",
   "dependencies": {
-    "package.json": "^2.0.1"
+    "nrelay": "file:nrelay"
   },
   "devDependencies": {
     "@types/node": "^16.3.2",
