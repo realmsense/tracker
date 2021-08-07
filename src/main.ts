@@ -1,7 +1,7 @@
-import { start, RunOptions } from "nrelay";
+import { Runtime, RunOptions } from "nrelay";
 
-const runOptions: RunOptions = {
+const options: RunOptions = {
     pluginPath: "dist/plugins"
 };
 
-start(runOptions);
+Runtime.start(options);
