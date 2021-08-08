@@ -6,6 +6,7 @@ const options: RunOptions = {
     pluginPath: "dist/plugins",
     update: {
         enabled: true,
+        // force: true,
         urls: {
             build_hash: UPDATE_URL + "build_hash.txt",
             exalt_version: UPDATE_URL + "exalt_version.txt",
