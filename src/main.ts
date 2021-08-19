@@ -13,7 +13,8 @@ const options: RunOptions = {
             objects_xml: UPDATE_URL + "xml/objects.xml",
             tiles_xml: UPDATE_URL + "xml/tiles.xml",
         }
-    }
+    },
+    debug: true
 };
 
 Runtime.start(options);
