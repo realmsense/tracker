@@ -2,3 +2,4 @@ node_modules/
 dist/
 docs/
 src/nrelay
+src/plugins/test-plugin.ts
