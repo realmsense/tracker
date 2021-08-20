@@ -1,4 +1,4 @@
-import { Client, Library, PacketHook, TextPacket, PlayerTextPacket, PlayerData, MapInfoPacket, MapInfo, UpdatePacket, Runtime, Logger, LogLevel, WorldPosData, TileXML } from "nrelay";
+import { Client, Library, PacketHook, MapInfoPacket, UpdatePacket, Runtime, Logger, LogLevel, WorldPosData, TileXML, ObjectXML, MapObject } from "nrelay";
 
 @Library({
     name: "Map",
@@ -10,15 +10,19 @@ export class MapPlugin {
     private runtime: Runtime;
 
     public mapInfo: Omit<MapInfoPacket, "read" | "write">;
+    
     public tileMap: {
         [x: number]: {
             [y: number]: TileXML
         }
     }
 
+    public portals: MapObject[];
+
     constructor(runtime: Runtime) {
         this.runtime = runtime;
         this.tileMap = {};
+        this.portals = [];
     }
 
     @PacketHook()
@@ -40,6 +44,21 @@ export class MapPlugin {
             this.tileMap[newTile.x] ??= {};
             this.tileMap[newTile.x][newTile.y] = tile;
             this.runtime.env.writeJSON(this.tileMap, "src/nrelay/test/tilemap.json");
+        }
+
+        for (const newObject of updatePacket.newObjects) {
+            const portalXML = this.runtime.resources.portals[newObject.objectType];
+            if (!portalXML) continue;
+
+            const object: MapObject = {
+                ...portalXML,
+                objectId: newObject.status.objectId,
+                pos: newObject.status.pos,
+                name: portalXML.dungeonName || portalXML.displayId || portalXML.id
+            };
+
+            this.portals.push(object);
+            this.runtime.env.writeJSON(this.portals, "src/nrelay/test/objects.json");
         }
     }
 }
