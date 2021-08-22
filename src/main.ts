@@ -1,4 +1,4 @@
-import { Runtime, RunOptions } from "nrelay";
+import { RunOptions, Runtime } from "nrelay";
 
 const UPDATE_URL = "https://rotmg.extacy.cc/production/client/current/";
 

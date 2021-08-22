@@ -1,23 +1,8 @@
 import TypedEmitter from "typed-emitter";
 import { EventEmitter } from "events";
-import { Client, Library, PacketHook, UpdatePacket, Runtime, Classes, _Player, NewTickPacket, PlayerData, _Enemy, _Pet } from "nrelay";
+import { Client, Plugin, PacketHook, UpdatePacket, Runtime, Classes, _Player, NewTickPacket, _Enemy, _Pet } from "nrelay";
 
-// Event Declarations
-interface PlayerTrackerEvents {
-    playerEnter: (client: Client, player: _Player) => void,
-    playerLeave: (client: Client, player: _Player) => void,
-    playerUpdate: (client: Client, player: _Player) => void,
-
-    enemyEnter: (client: Client, player: _Enemy) => void,
-    enemyLeave: (client: Client, player: _Enemy) => void,
-    enemyUpdate: (client: Client, player: _Enemy) => void,
-    
-    petEnter: (client: Client, player: _Pet) => void,
-    petLeave: (client: Client, player: _Pet) => void,
-    petUpdate: (client: Client, player: _Pet) => void,
-}
-
-@Library({
+@Plugin({
     name: "Entity Tracker",
     author: "Extacy",
     enabled: true
@@ -91,8 +76,8 @@ export class EntityTracker {
     }
 
     @PacketHook()
-    public onUpdate(client: Client, updatePacket: UpdatePacket): void {
-
+    public onUpdate(updatePacket: UpdatePacket, client: Client): void {
+        
         this.players[client.account.guid] ??= [];
 
         for (const newObject of updatePacket.newObjects) {
@@ -133,7 +118,7 @@ export class EntityTracker {
 
 
     @PacketHook()
-    public onNewTick(client: Client, newTickPacket: NewTickPacket): void {
+    public onNewTick(newTickPacket: NewTickPacket, client: Client): void {
         this.players[client.account.guid] ??= [];
 
         for (const status of newTickPacket.statuses) {
@@ -144,4 +129,19 @@ export class EntityTracker {
             }
         }
     }
+}
+
+// Event Declarations
+interface PlayerTrackerEvents {
+    playerEnter: (client: Client, player: _Player) => void,
+    playerLeave: (client: Client, player: _Player) => void,
+    playerUpdate: (client: Client, player: _Player) => void,
+
+    enemyEnter: (client: Client, player: _Enemy) => void,
+    enemyLeave: (client: Client, player: _Enemy) => void,
+    enemyUpdate: (client: Client, player: _Enemy) => void,
+    
+    petEnter: (client: Client, player: _Pet) => void,
+    petLeave: (client: Client, player: _Pet) => void,
+    petUpdate: (client: Client, player: _Pet) => void,
 }

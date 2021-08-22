@@ -1,13 +1,11 @@
-import { log } from "console";
-import { Library, Runtime, PacketHook, Client, Server, Logger, LogLevel } from "nrelay";
-import { ServerPlayerShootPacket, TextPacket } from "realmlib";
-import { EntityTracker, MapPlugin } from ".";
+import { Plugin, Runtime, Client, Logger, LogLevel } from "nrelay";
+import { EntityTracker } from ".";
 import { DedicatedBot } from "./tracker/dedicated-bot";
 
-@Library({
+@Plugin({
     name: "Tracker",
     author: "Extacy",
-    enabled: false
+    enabled: true
 })
 export class TrackerPlugin {
 
@@ -23,7 +21,6 @@ export class TrackerPlugin {
 
     constructor(
         public playerTracker: EntityTracker,
-        public map: MapPlugin,
         public runtime: Runtime
     ) {
         this.bots = {};
@@ -78,8 +75,4 @@ export class TrackerPlugin {
         // should be designated to a server, because we will be sharing proxy across servers
     }
 
-    @PacketHook()
-    public onTextPacket(client: Client, packet: TextPacket): void {
-        // console.log(packet);
-    }
 }
