@@ -1,11 +1,10 @@
 import { Plugin, Runtime, Client, Logger, LogLevel } from "nrelay";
-import { EntityTracker } from ".";
 import { DedicatedBot } from "./tracker/dedicated-bot";
 
 @Plugin({
     name: "Tracker",
     author: "Extacy",
-    enabled: true
+    enabled: false
 })
 export class TrackerPlugin {
 
@@ -20,7 +19,6 @@ export class TrackerPlugin {
     }
 
     constructor(
-        public playerTracker: EntityTracker,
         public runtime: Runtime
     ) {
         this.bots = {};
