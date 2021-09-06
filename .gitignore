@@ -3,3 +3,4 @@ dist/
 docs/
 src/nrelay
 src/plugins/test-plugin.ts
+.vscode
