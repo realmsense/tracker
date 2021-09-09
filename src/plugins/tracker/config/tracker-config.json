@@ -1,0 +1,14 @@
+{
+    "debug": {
+        "enabled": true
+    },
+    "Locations": {
+        "Guild Hall"      : [124.5, 151.5],
+        "Vault"           : [131.5, 151.5],
+        "Pet Yard"        : [131.5, 146.5],
+        "Daily Quest Room": [134.5, 135.5],
+        "Left Bazaar"     : [108, 149],
+        "Right Bazaar"    : [148, 149],
+        "Realms"          : [128, 117]
+    }
+}
