@@ -1,5 +1,5 @@
-import { Client, CreateSuccessPacket, delay, Logger, LogLevel, PacketHook, Point, Portal, UpdatePacket } from "nrelay";
-import { TrackerPlugin, Realm } from "..";
+import { Client, CreateSuccessPacket, delay, Logger, LogLevel, PacketHook, Point, Portal, TextPacket } from "nrelay";
+import { TrackerPlugin, Realm, KeyPop } from "..";
 import TrackerConfig from "./config/tracker-config.json";
 
 export class DedicatedBot {
@@ -54,7 +54,13 @@ export class DedicatedBot {
     }
 
     @PacketHook()
-    private onUpdate(updatePacket: UpdatePacket): void {
+    private onTextPacket(textPacket: TextPacket): void {
 
+        // Key Pops
+        // eslint-disable-next-line quotes
+        if (textPacket.text.startsWith('{"key":"server.dungeon_opened_by"')) {
+            const keypop: KeyPop = JSON.parse(textPacket.text);
+            this.trackerPlugin.onKeyPop(keypop, this.client);
+        }
     }
 }

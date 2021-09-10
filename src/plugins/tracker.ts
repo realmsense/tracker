@@ -1,7 +1,7 @@
 import EventEmitter from "events";
 import TypedEmitter from "typed-emitter";
 import { Plugin, Runtime, Client, Logger, LogLevel, Player } from "nrelay";
-import { DedicatedBot, Realm } from ".";
+import { DedicatedBot, KeyPop, Realm } from ".";
 import TrackerConfig from "./tracker/config/tracker-config.json";
 
 @Plugin({
@@ -23,20 +23,20 @@ export class TrackerPlugin {
     public bots: {
         [serverName: string]: {
             dedicated: DedicatedBot,
-            available: [] 
+            available: []
         }
     }
 
     constructor(runtime: Runtime) {
-        
+
         this.runtime = runtime;
         this.runtime.emitter.on("Created", this.onClientCreated.bind(this));
-        
+
         this.emitter = new EventEmitter();
-        
+
         this.currentServerIndex = 0;
         this.allServersTracked = false;
-        
+
         this.realms = [];
         this.players = [];
         this.bots = {};
@@ -69,7 +69,7 @@ export class TrackerPlugin {
         this.emitter.emit("realmUpdate", realm);
         Logger.log("Tracker", `Updated realm: ${realm.name}`, LogLevel.Debug);
     }
-        
+
     public removeRealm(realm: Realm): void {
         const index = this.realms.findIndex((value) => value.objectID == realm.objectID);
         if (index == -1) {
@@ -116,6 +116,10 @@ export class TrackerPlugin {
         this.players.slice(index, 1);
         this.emitter.emit("playerLeave", player);
         Logger.log("Tracker", `Removed player: ${player.name}`, LogLevel.Debug);
+    }
+
+    public onKeyPop(keypop: KeyPop, client: Client): void {
+        this.emitter.emit("keyPop", keypop, client);
     }
 
     private onClientCreated(client: Client): void {
@@ -165,14 +169,14 @@ export class TrackerPlugin {
 }
 
 export interface TrackerEvents {
-    realmOpen  : (realm: Realm) => void,
+    realmOpen: (realm: Realm) => void,
     realmUpdate: (realm: Realm) => void,
-    realmClose : (realm: Realm) => void,
-    
+    realmClose: (realm: Realm) => void,
+
     playerEnter: (player: Player) => void,
     playerUpdate: (player: Player) => void,
     playerLeave: (player: Player) => void,
-    
-    keyPop: () => void,
+
+    keyPop: (keypop: KeyPop, client: Client) => void,
     raidStarted: (player: Player) => void,
 }
