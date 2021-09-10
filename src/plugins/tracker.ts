@@ -42,7 +42,7 @@ export class TrackerPlugin {
 
     public addRealm(realm: Realm): void {
         // Duplicate realm
-        const foundIndex = this.realms.findIndex((value) => value.objectId == realm.objectId);
+        const foundIndex = this.realms.findIndex((value) => value.objectID == realm.objectID);
         if (foundIndex != -1) {
             this.updateRealm(realm);
             return;
@@ -50,7 +50,6 @@ export class TrackerPlugin {
 
         this.realms.push(realm);
         this.emitter.emit("realmOpen", realm);
-
         Logger.log("Tracker", `Added realm: ${realm.name}`, LogLevel.Debug);
 
         // TODO: call method to get an available bot to connect to the realm to track events / get IP address
@@ -59,7 +58,7 @@ export class TrackerPlugin {
 
     public updateRealm(realm: Realm, index?: number): void {
         if (index == undefined) {
-            index = this.realms.findIndex((value) => value.objectId == realm.objectId);
+            index = this.realms.findIndex((value) => value.objectID == realm.objectID);
         }
 
         if (index == -1) return;
@@ -70,9 +69,9 @@ export class TrackerPlugin {
     }
         
     public removeRealm(realm: Realm): void {
-        const index = this.realms.findIndex((value) => value.objectId == realm.objectId);
+        const index = this.realms.findIndex((value) => value.objectID == realm.objectID);
         if (index == -1) {
-            Logger.log("Tracker", `Unable to remove non tracked realm: ${realm.server.name} ${realm.name} (objectID: ${realm.objectId})`, LogLevel.Warning);
+            Logger.log("Tracker", `Unable to remove non tracked realm: ${realm.server.name} ${realm.name} (objectID: ${realm.objectID})`, LogLevel.Warning);
             return;
         }
 

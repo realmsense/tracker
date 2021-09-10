@@ -9,40 +9,19 @@ export class DedicatedBot {
         public client: Client
     ) {
         this.trackerPlugin.runtime.pluginManager.hookInstance(client, this);
-        this.client.map.emitter.on("portalOpen", this.onPortalOpen.bind(this));
-        this.client.map.emitter.on("portalUpdate", this.onPortalUpdate.bind(this));
-        this.client.map.emitter.on("portalRemoved", this.onPortalRemoved.bind(this));
+        
+        this.client.map.emitter.on("portalOpen",    (portal) => this.handlePortal(portal, this.trackerPlugin.addRealm.bind(this.trackerPlugin)));
+        this.client.map.emitter.on("portalUpdate",  (portal) => this.handlePortal(portal, this.trackerPlugin.updateRealm.bind(this.trackerPlugin)));
+        this.client.map.emitter.on("portalRemoved", (portal) => this.handlePortal(portal, this.trackerPlugin.removeRealm.bind(this.trackerPlugin)));
     }
     
-    private onPortalOpen(portal: Portal): void {
-        // Add Realm
+    private handlePortal(portal: Portal, realmCallback: (realm: Realm) => void) {
+        // Realms
         if (portal.name?.startsWith("NexusPortal")) {
             const realm = Realm.parseRealmPortal(portal);
             if (realm) {
                 realm.server = this.client.server;
-                this.trackerPlugin.addRealm(realm);
-                return;
-            }
-        }
-    }
-
-    private onPortalUpdate(portal: Portal): void {
-        // Update Realm
-        if (portal.name?.startsWith("NexusPortal")) {
-            const realm = Realm.parseRealmPortal(portal);
-            if (realm) {
-                this.trackerPlugin.updateRealm(realm);
-                return;
-            }
-        }
-    }
-
-    private onPortalRemoved(portal: Portal): void {
-        // Remove Realm
-        if (portal.name?.startsWith("NexusPortal")) {
-            const realm = Realm.parseRealmPortal(portal);
-            if (realm) {
-                this.trackerPlugin.removeRealm(realm);
+                realmCallback(realm);
                 return;
             }
         }

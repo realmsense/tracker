@@ -1,7 +1,6 @@
 import { Server, Portal, timestamp } from "nrelay";
 
 export class Realm extends Portal {
-    public objectId: number;
     public server: Server;
     public players: number;
     public maxPlayers: number;
