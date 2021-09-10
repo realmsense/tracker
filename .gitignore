@@ -3,5 +3,4 @@ dist/
 docs/
 src/nrelay
 src/plugins/test-plugin.ts
-.vscode
 workspace.code-workspace
