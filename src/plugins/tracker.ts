@@ -18,6 +18,7 @@ export class TrackerPlugin {
     public currentServerIndex: number;
 
     public readonly realms: Realm[];
+    public readonly players: Player[];
 
     public bots: {
         [serverName: string]: {
@@ -37,6 +38,7 @@ export class TrackerPlugin {
         this.allServersTracked = false;
         
         this.realms = [];
+        this.players = [];
         this.bots = {};
     }
 
@@ -78,6 +80,42 @@ export class TrackerPlugin {
         this.realms.slice(index, 1);
         this.emitter.emit("realmClose", realm);
         Logger.log("Tracker", `Removed realm: ${realm.name}`, LogLevel.Debug);
+    }
+
+    public addPlayer(player: Player): void {
+        const foundIndex = this.players.findIndex((value) => value.objectID == player.objectID);
+        if (foundIndex != -1) {
+            this.updatePlayer(player);
+            return;
+        }
+
+        this.players.push(player);
+        this.emitter.emit("playerEnter", player);
+        Logger.log("Tracker", `Added player: ${player.name}`, LogLevel.Debug);
+    }
+
+    public updatePlayer(player: Player, index?: number): void {
+        if (index == undefined) {
+            index = this.players.findIndex((value) => value.objectID == player.objectID);
+        }
+
+        if (index == -1) return;
+
+        this.players[index].parseStatus(player.status);
+        this.emitter.emit("playerUpdate", player);
+        Logger.log("Tracker", `Updated player: ${player.name}`, LogLevel.Debug);
+    }
+
+    public removePlayer(player: Player): void {
+        const index = this.players.findIndex((value) => value.objectID == player.objectID);
+        if (index == -1) {
+            Logger.log("Tracker", `Unable to remove non tracked player: ${player.name} (objectID: ${player.objectID})`, LogLevel.Warning);
+            return;
+        }
+
+        this.players.slice(index, 1);
+        this.emitter.emit("playerLeave", player);
+        Logger.log("Tracker", `Removed player: ${player.name}`, LogLevel.Debug);
     }
 
     private onClientCreated(client: Client): void {
@@ -132,6 +170,7 @@ export interface TrackerEvents {
     realmClose : (realm: Realm) => void,
     
     playerEnter: (player: Player) => void,
+    playerUpdate: (player: Player) => void,
     playerLeave: (player: Player) => void,
     
     keyPop: () => void,

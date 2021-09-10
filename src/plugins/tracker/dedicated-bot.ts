@@ -1,4 +1,4 @@
-import { Client, CreateSuccessPacket, delay, Logger, LogLevel, MapInfoPacket, PacketHook, PacketType, Point, Portal, ReconnectPacket, timestamp, UpdatePacket, UsePortalPacket } from "nrelay";
+import { Client, CreateSuccessPacket, delay, Logger, LogLevel, PacketHook, Point, Portal, UpdatePacket } from "nrelay";
 import { TrackerPlugin, Realm } from "..";
 import TrackerConfig from "./config/tracker-config.json";
 
@@ -10,9 +10,15 @@ export class DedicatedBot {
     ) {
         this.trackerPlugin.runtime.pluginManager.hookInstance(client, this);
         
+        // Portals
         this.client.map.emitter.on("portalOpen",    (portal) => this.handlePortal(portal, this.trackerPlugin.addRealm.bind(this.trackerPlugin)));
         this.client.map.emitter.on("portalUpdate",  (portal) => this.handlePortal(portal, this.trackerPlugin.updateRealm.bind(this.trackerPlugin)));
         this.client.map.emitter.on("portalRemoved", (portal) => this.handlePortal(portal, this.trackerPlugin.removeRealm.bind(this.trackerPlugin)));
+
+        // Players
+        this.client.entityTracker.emitter.on("playerEnter",     this.trackerPlugin.addPlayer.bind(this.trackerPlugin));
+        this.client.entityTracker.emitter.on("playerUpdate",    this.trackerPlugin.updatePlayer.bind(this.trackerPlugin));
+        this.client.entityTracker.emitter.on("playerLeave",     this.trackerPlugin.removePlayer.bind(this.trackerPlugin));
     }
     
     private handlePortal(portal: Portal, realmCallback: (realm: Realm) => void) {
