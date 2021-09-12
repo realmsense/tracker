@@ -21,7 +21,7 @@ export class DedicatedBot {
         this.client.entityTracker.emitter.on("playerLeave",     this.trackerPlugin.removePlayer.bind(this.trackerPlugin));
     }
     
-    private handlePortal(portal: Portal, realmCallback: (realm: Realm) => void) {
+    private handlePortal(portal: Portal, realmCallback: (realm: Realm) => void): void {
         // Realms
         if (portal.name?.startsWith("NexusPortal")) {
             const realm = Realm.parseRealmPortal(portal);

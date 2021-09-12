@@ -15,7 +15,7 @@ class GetInfoPlugin {
     }
 
     @PacketHook()
-    private onTextPacket(textPacket: TextPacket, client: Client) {
+    private onTextPacket(textPacket: TextPacket, client: Client): void {
 
         if (textPacket.author != PLAYER_NAME) return;
         if (!textPacket.text.startsWith("getinfo")) return;
