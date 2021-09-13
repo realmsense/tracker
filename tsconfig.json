@@ -5,7 +5,7 @@
         "sourceMap": true,
         "declaration": true,
         "outDir": "./dist",
-        "rootDir": "./src",
+        "baseUrl": "./",
         "strict": true,
         "strictPropertyInitialization": false,
         "esModuleInterop": true,
@@ -13,10 +13,15 @@
         "emitDecoratorMetadata": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "paths": {
+            "*": ["*"],
+            "@realmsense/types": ["./types/src"]
+        },
     },
     "include": [
-        "src"
+        "src",
+        "./types/src"
     ],
     "references": [
         { "path": "./nrelay" }

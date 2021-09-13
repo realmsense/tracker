@@ -1,10 +1,11 @@
 import { Server, Portal, timestamp } from "nrelay";
+import { IRealm } from "@realmsense/types";
 
-export class Realm extends Portal {
+export class Realm extends Portal implements IRealm {
     public server: Server;
     public players: number;
     public maxPlayers: number;
-    
+
     public queue: number;
     public updatedTime: number;
 
@@ -20,12 +21,12 @@ export class Realm extends Portal {
         const pattern = /NexusPortal\.(\w+) \((\d+)\/(\d+)\)(?: \(\+(\d+)\))?/;
         const match = portal.name.match(pattern);
         if (!match) return null;
-        
+
         const realm = new Realm();
         realm.parseStatus(portal.status);
-        realm.name       = match[1];
-        realm.players    = parseInt(match[2]);
-        realm.maxPlayers = parseInt(match[3]);
+        realm.name        = match[1];
+        realm.players     = parseInt(match[2]);
+        realm.maxPlayers  = parseInt(match[3]);
         realm.queue       = (match[4] ? parseInt(match[4]) : 0);
         realm.updatedTime = timestamp();
         return realm;
