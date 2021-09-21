@@ -3,7 +3,7 @@ import { RunOptions, Runtime } from "nrelay";
 const UPDATE_URL = "https://rotmg.extacy.cc/production/client/current/";
 
 const options: RunOptions = {
-    pluginPath: "dist/plugins",
+    pluginPath: "dist/src/plugins",
     update: {
         enabled: true,
         // force: true,
