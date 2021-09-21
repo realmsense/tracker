@@ -1,8 +1,9 @@
 import EventEmitter from "events";
 import TypedEmitter from "typed-emitter";
-import { Plugin, Runtime, Client, Logger, LogLevel, Player } from "nrelay";
+import { Plugin, Runtime, Client, Logger, LogLevel, Player, HttpClient } from "nrelay";
 import { DedicatedBot, KeyPop, Realm } from ".";
 import TrackerConfig from "./tracker/config/tracker-config.json";
+import { API } from "..";
 
 @Plugin({
     name: "Tracker",
@@ -40,6 +41,15 @@ export class TrackerPlugin {
         this.realms = [];
         this.players = [];
         this.bots = {};
+
+        HttpClient.request(
+            "DELETE",
+            API.URL + "/tracker/realms",
+            { authkey: API.AUTHKEY.REALM },
+            null, undefined
+        )
+            .then((value) => Logger.log("Tracker|API", "Deleted all realms (startup)", LogLevel.Info))
+            .catch((reason) => Logger.log("Tracker|API", `Failed to Delete all realms on startup: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
 
     public addRealm(realm: Realm): void {
@@ -53,6 +63,17 @@ export class TrackerPlugin {
         this.realms.push(realm);
         this.emitter.emit("realmOpen", realm);
         Logger.log("Tracker", `Added realm: ${realm.name}`, LogLevel.Debug);
+
+        HttpClient.request(
+            "PUT",
+            API.URL + "/tracker/realms",
+            { authkey: API.AUTHKEY.REALM },
+            realm,
+            undefined,
+            { "Content-Type": "application/json" }
+        )
+            .then((value) => Logger.log("Tracker|API", `Added realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
+            .catch((reason) => Logger.log("Tracker|API", `Failed to Add realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
 
         // TODO: call method to get an available bot to connect to the realm to track events / get IP address
         // if no available bots are available, add to realmQueue
@@ -68,6 +89,17 @@ export class TrackerPlugin {
         this.realms[index].parseStatus(realm.status);
         this.emitter.emit("realmUpdate", realm);
         Logger.log("Tracker", `Updated realm: ${realm.name}`, LogLevel.Debug);
+
+        HttpClient.request(
+            "PATCH",
+            API.URL + "/tracker/realms",
+            { authkey: API.AUTHKEY.REALM },
+            realm,
+            undefined,
+            { "Content-Type": "application/json" }
+        )
+            .then((value) => Logger.log("Tracker|API", `Updated realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
+            .catch((reason) => Logger.log("Tracker", `Failed to Update realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
 
     public removeRealm(realm: Realm): void {
@@ -80,6 +112,17 @@ export class TrackerPlugin {
         this.realms.slice(index, 1);
         this.emitter.emit("realmClose", realm);
         Logger.log("Tracker", `Removed realm: ${realm.name}`, LogLevel.Debug);
+
+        HttpClient.request(
+            "DELETE",
+            API.URL + "/tracker/realms",
+            { authkey: API.AUTHKEY.REALM },
+            realm,
+            undefined,
+            { "Content-Type": "application/json" }
+        )
+            .then((value) => Logger.log("Tracker|API", `Deleted realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
+            .catch((reason) => Logger.log("Tracker", `Failed to Delete realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
 
     public addPlayer(player: Player): void {
