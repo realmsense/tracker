@@ -3,12 +3,12 @@
         "enabled": true
     },
     "Locations": {
-        "Guild Hall"      : [124.5, 151.5],
-        "Vault"           : [131.5, 151.5],
-        "Pet Yard"        : [131.5, 146.5],
-        "Daily Quest Room": [134.5, 135.5],
-        "Left Bazaar"     : [108, 149],
-        "Right Bazaar"    : [148, 149],
-        "Realms"          : [128, 117]
+        "Guild Hall"      : [103.5, 166.5],
+        "Vault"           : [110.5, 166.5],
+        "Pet Yard"        : [110.5, 161.5],
+        "Daily Quest Room": [113.5, 145.5],
+        "Left Bazaar"     : [87, 164],
+        "Right Bazaar"    : [127, 164],
+        "Realms"          : [107, 131]
     }
 }

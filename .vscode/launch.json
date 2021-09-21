@@ -13,12 +13,13 @@
             ],
             "program": "${workspaceFolder}\\dist\\src\\index.js",
             // "preLaunchTask": "tsc: build - tsconfig.json",
+            // "preLaunchTask": "npm: compile",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js",
                 "${workspaceFolder}/nrelay/dist/**/*.js",
                 "${workspaceFolder}/nrelay/realmlib/dist/**/*.js",
             ],
             "console": "integratedTerminal"
-        }
+    }
     ]
 }
