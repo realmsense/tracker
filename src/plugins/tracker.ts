@@ -99,7 +99,7 @@ export class TrackerPlugin {
             { "Content-Type": "application/json" }
         )
             .then((value) => Logger.log("Tracker|API", `Updated realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
-            .catch((reason) => Logger.log("Tracker", `Failed to Update realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
+            .catch((reason) => Logger.log("Tracker|API", `Failed to Update realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
 
     public removeRealm(realm: Realm): void {
@@ -122,7 +122,7 @@ export class TrackerPlugin {
             { "Content-Type": "application/json" }
         )
             .then((value) => Logger.log("Tracker|API", `Deleted realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
-            .catch((reason) => Logger.log("Tracker", `Failed to Delete realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
+            .catch((reason) => Logger.log("Tracker|API", `Failed to Delete realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
 
     public addPlayer(player: Player): void {
@@ -134,7 +134,7 @@ export class TrackerPlugin {
 
         this.players.push(player);
         this.emitter.emit("playerEnter", player);
-        Logger.log("Tracker", `Added player: ${player.name}`, LogLevel.Debug);
+        // Logger.log("Tracker", `Added player: ${player.name}`, LogLevel.Debug);
     }
 
     public updatePlayer(player: Player, index?: number): void {
@@ -146,7 +146,7 @@ export class TrackerPlugin {
 
         this.players[index].parseStatus(player.status);
         this.emitter.emit("playerUpdate", player);
-        Logger.log("Tracker", `Updated player: ${player.name}`, LogLevel.Debug);
+        // Logger.log("Tracker", `Updated player: ${player.name}`, LogLevel.Debug);
     }
 
     public removePlayer(player: Player): void {
@@ -158,7 +158,7 @@ export class TrackerPlugin {
 
         this.players.slice(index, 1);
         this.emitter.emit("playerLeave", player);
-        Logger.log("Tracker", `Removed player: ${player.name}`, LogLevel.Debug);
+        // Logger.log("Tracker", `Removed player: ${player.name}`, LogLevel.Debug);
     }
 
     public onKeyPop(keypop: KeyPop, client: Client): void {

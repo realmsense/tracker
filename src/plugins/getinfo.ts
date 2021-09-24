@@ -41,18 +41,20 @@ class GetInfoPlugin {
                 break;
         }
 
-        const entity = client.entityTracker.players.find((value) => value.name == targetName);
-        if (!entity) {
+        const player = client.entityTracker.players.find((value) => value.name == targetName);
+        if (!player) {
             Logger.log("Get Info", `Unable to find a player with the name: ${targetName}`, LogLevel.Warning);
             return;
         }
         
-        if (!Object.keys(entity).includes(propName)) {
+        console.log(JSON.stringify(player));
+
+        if (!Object.keys(player).includes(propName)) {
             Logger.log("Get Info", `Unknown property: ${propName}`, LogLevel.Warning);
             return;
         }
         
         Logger.log("Get Info", `The value of "${propName}" is:`, LogLevel.Success);
-        console.log((entity as any)[propName]);
+        console.log((player as any)[propName]);
     }
 }
