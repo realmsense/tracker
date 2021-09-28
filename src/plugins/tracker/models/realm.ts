@@ -23,7 +23,7 @@ export class Realm extends Portal implements IRealm {
         if (!match) return null;
 
         const realm = new Realm();
-        realm.parseStatus(portal.status);
+        realm.parseObjectStatus(portal.status);
         realm.name        = match[1];
         realm.players     = parseInt(match[2]);
         realm.maxPlayers  = parseInt(match[3]);

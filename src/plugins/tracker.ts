@@ -86,7 +86,7 @@ export class TrackerPlugin {
 
         if (index == -1) return;
 
-        this.realms[index].parseStatus(realm.status);
+        this.realms[index].parseObjectStatus(realm.status);
         this.emitter.emit("realmUpdate", realm);
         Logger.log("Tracker", `Updated realm: ${realm.name}`, LogLevel.Debug);
 
@@ -144,7 +144,7 @@ export class TrackerPlugin {
 
         if (index == -1) return;
 
-        this.players[index].parseStatus(player.status);
+        this.players[index].parseObjectStatus(player.status);
         this.emitter.emit("playerUpdate", player);
         // Logger.log("Tracker", `Updated player: ${player.name}`, LogLevel.Debug);
     }
