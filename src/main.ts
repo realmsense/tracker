@@ -1,6 +1,7 @@
 import { RunOptions, Runtime } from "nrelay";
+import { _GetEnvObject } from "../types/src/constants/environment.model";
 
-const UPDATE_URL = "https://rotmg.extacy.cc/production/client/current/";
+const ENV = _GetEnvObject();
 
 const options: RunOptions = {
     pluginPath: "dist/src/plugins",
@@ -8,10 +9,10 @@ const options: RunOptions = {
         enabled: true,
         // force: true,
         urls: {
-            build_hash: UPDATE_URL + "build_hash.txt",
-            exalt_version: UPDATE_URL + "exalt_version.txt",
-            objects_xml: UPDATE_URL + "xml/objects.xml",
-            tiles_xml: UPDATE_URL + "xml/tiles.xml",
+            build_hash   : ENV.URL.Updater + "/build_hash.txt",
+            exalt_version: ENV.URL.Updater + "/exalt_version.txt",
+            objects_xml  : ENV.URL.Updater + "/xml/objects.xml",
+            tiles_xml    : ENV.URL.Updater + "/xml/tiles.xml",
         }
     },
     debug: true

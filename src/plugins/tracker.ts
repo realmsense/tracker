@@ -3,7 +3,9 @@ import TypedEmitter from "typed-emitter";
 import { Plugin, Runtime, Client, Logger, LogLevel, Player, HttpClient } from "nrelay";
 import { DedicatedBot, KeyPop, Realm } from ".";
 import TrackerConfig from "./tracker/config/tracker-config.json";
-import { API } from "..";
+import { _GetEnvObject } from "../../types/src/constants/environment.model";
+
+const ENV = _GetEnvObject();
 
 @Plugin({
     name: "Tracker",
@@ -44,8 +46,8 @@ export class TrackerPlugin {
 
         HttpClient.request(
             "DELETE",
-            API.URL + "/tracker/realms",
-            { authkey: API.AUTHKEY.REALM },
+            ENV.URL.API + "/tracker/realms",
+            { authkey: ENV.Authkey.Realms },
             null, undefined
         )
             .then((value) => Logger.log("Tracker|API", "Deleted all realms (startup)", LogLevel.Info))
@@ -66,8 +68,8 @@ export class TrackerPlugin {
 
         HttpClient.request(
             "PUT",
-            API.URL + "/tracker/realms",
-            { authkey: API.AUTHKEY.REALM },
+            ENV.URL.API + "/tracker/realms",
+            { authkey: ENV.Authkey.Realms },
             realm,
             undefined,
             { "Content-Type": "application/json" }
@@ -92,8 +94,8 @@ export class TrackerPlugin {
 
         HttpClient.request(
             "PATCH",
-            API.URL + "/tracker/realms",
-            { authkey: API.AUTHKEY.REALM },
+            ENV.URL.API + "/tracker/realms",
+            { authkey: ENV.Authkey.Realms },
             realm,
             undefined,
             { "Content-Type": "application/json" }
@@ -115,8 +117,8 @@ export class TrackerPlugin {
 
         HttpClient.request(
             "DELETE",
-            API.URL + "/tracker/realms",
-            { authkey: API.AUTHKEY.REALM },
+            ENV.URL.API + "/tracker/realms",
+            { authkey: ENV.Authkey.Realms },
             realm,
             undefined,
             { "Content-Type": "application/json" }

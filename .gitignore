@@ -4,3 +4,4 @@ docs/
 src/nrelay
 src/plugins/test-plugin.ts
 workspace.code-workspace
+.env
