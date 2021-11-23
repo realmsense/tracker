@@ -1,6 +1,6 @@
 [submodule "nrelay"]
 	path = nrelay
 	url = https://git.extacy.cc/realmsense/nrelay
-[submodule "types"]
-	path = types
-	url = https://git.extacy.cc/realmsense/types
+[submodule "shared"]
+	path = shared
+	url = https://git.extacy.cc/realmsense/shared

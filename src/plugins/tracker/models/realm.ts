@@ -1,5 +1,5 @@
 import { Server, Portal, timestamp } from "nrelay";
-import { IRealm } from "../../../../types/src";
+import { IRealm } from "../../../../shared/src";
 
 export class Realm extends Portal implements IRealm {
     public server: Server;

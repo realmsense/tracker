@@ -1,7 +1,5 @@
 import { RunOptions, Runtime } from "nrelay";
-import { _GetEnvObject } from "../types/src/constants/environment.model";
-
-const ENV = _GetEnvObject();
+import { ENV } from "../shared/src/constants/environment";
 
 const options: RunOptions = {
     pluginPath: "dist/src/plugins",
