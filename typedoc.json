@@ -1,7 +1,0 @@
-{
-    "name": "nrelay-project",
-    "entryPoints": [
-        "src/main.ts"
-    ],
-    "out": "./docs"
-}

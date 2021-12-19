@@ -3,7 +3,7 @@ import TypedEmitter from "typed-emitter";
 import { Plugin, Runtime, Client, Logger, LogLevel, Player, HttpClient } from "nrelay";
 import { DedicatedBot, KeyPop, Realm } from ".";
 import TrackerConfig from "./tracker/config/tracker-config.json";
-import { ENV } from "../../shared/src/constants/environment";
+import { ENV } from "@realmsense/shared";
 
 @Plugin({
     name: "Tracker",
