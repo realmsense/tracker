@@ -11,15 +11,23 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\dist\\src\\index.js",
-            // "preLaunchTask": "tsc: build - tsconfig.json",
-            // "preLaunchTask": "npm: compile",
+            "preLaunchTask": "Build watch",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "."
+            ],
             "outFiles": [
+                // if submodules are not linked
                 "${workspaceFolder}/dist/**/*.js",
                 "${workspaceFolder}/nrelay/dist/**/*.js",
                 "${workspaceFolder}/nrelay/realmlib/dist/**/*.js",
+
+                // if submodules are linked using mklink /J
+                "${workspaceFolder}\\dist\\**\\*.js",
+                "${workspaceFolder}\\..\\nrelay\\dist\\**\\*.js",
+                "${workspaceFolder}\\..\\realmlib\\dist\\**\\*.js",
             ],
-            "console": "integratedTerminal"
-    }
+            "console": "integratedTerminal",
+        }
     ]
 }
