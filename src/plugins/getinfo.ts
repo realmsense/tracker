@@ -1,5 +1,5 @@
+import { ENV } from "@realmsense/shared";
 import { Client, Plugin, PacketHook, Runtime, TextPacket, Logger, LogLevel } from "nrelay";
-import { PLAYER_NAME } from "..";
 
 @Plugin({
     name: "Get Info",
@@ -17,7 +17,7 @@ class GetInfoPlugin {
     @PacketHook()
     private onTextPacket(textPacket: TextPacket, client: Client): void {
 
-        if (textPacket.author != PLAYER_NAME) return;
+        if (textPacket.author != ENV.Tracker.AdminName) return;
         if (!textPacket.text.startsWith("getinfo")) return;
         if (textPacket.recipient != client.name) return; // must be a pm
 

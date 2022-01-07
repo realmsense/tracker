@@ -1,6 +1,7 @@
 import EventEmitter from "events";
 import TypedEmitter from "typed-emitter";
-import { Plugin, Runtime, Client, Logger, LogLevel, Player, HttpClient } from "nrelay";
+import { Method } from "axios";
+import { Plugin, Runtime, Client, Logger, LogLevel, Player, HttpClient, RequestHeaders } from "nrelay";
 import { DedicatedBot, KeyPop, Realm } from ".";
 import TrackerConfig from "./tracker/config/tracker-config.json";
 import { ENV } from "@realmsense/shared";
@@ -42,14 +43,9 @@ export class TrackerPlugin {
         this.players = [];
         this.bots = {};
 
-        HttpClient.request(
-            "DELETE",
-            ENV.URL.API + "/tracker/realms",
-            { authkey: ENV.Authkey.Realms },
-            null, undefined
-        )
+        this.api("DELETE", "/tracker/realms", null)
             .then((value) => Logger.log("Tracker|API", "Deleted all realms (startup)", LogLevel.Info))
-            .catch((reason) => Logger.log("Tracker|API", `Failed to Delete all realms on startup: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
+            .catch((reason) => Logger.log("Tracker|API", `Failed to Delete all realms on startup: ${reason.response.data.message} (${reason.response.d.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
 
     public addRealm(realm: Realm): void {
@@ -64,14 +60,7 @@ export class TrackerPlugin {
         this.emitter.emit("realmOpen", realm);
         Logger.log("Tracker", `Added realm: ${realm.name}`, LogLevel.Debug);
 
-        HttpClient.request(
-            "PUT",
-            ENV.URL.API + "/tracker/realms",
-            { authkey: ENV.Authkey.Realms },
-            realm,
-            undefined,
-            { "Content-Type": "application/json" }
-        )
+        this.api("PUT", "/tracker/realms", realm, { "Content-Type": "application/json" })
             .then((value) => Logger.log("Tracker|API", `Added realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
             .catch((reason) => Logger.log("Tracker|API", `Failed to Add realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
 
@@ -90,14 +79,7 @@ export class TrackerPlugin {
         this.emitter.emit("realmUpdate", realm);
         Logger.log("Tracker", `Updated realm: ${realm.name}`, LogLevel.Debug);
 
-        HttpClient.request(
-            "PATCH",
-            ENV.URL.API + "/tracker/realms",
-            { authkey: ENV.Authkey.Realms },
-            realm,
-            undefined,
-            { "Content-Type": "application/json" }
-        )
+        this.api("PATCH", "/tracker/realms", realm, { "Content-Type": "application/json" })
             .then((value) => Logger.log("Tracker|API", `Updated realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
             .catch((reason) => Logger.log("Tracker|API", `Failed to Update realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
@@ -113,14 +95,7 @@ export class TrackerPlugin {
         this.emitter.emit("realmClose", realm);
         Logger.log("Tracker", `Removed realm: ${realm.name}`, LogLevel.Debug);
 
-        HttpClient.request(
-            "DELETE",
-            ENV.URL.API + "/tracker/realms",
-            { authkey: ENV.Authkey.Realms },
-            realm,
-            undefined,
-            { "Content-Type": "application/json" }
-        )
+        this.api("DELETE", "/tracker/realms", realm, { "Content-Type": "application/json" })
             .then((value) => Logger.log("Tracker|API", `Deleted realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
             .catch((reason) => Logger.log("Tracker|API", `Failed to Delete realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
     }
@@ -208,6 +183,24 @@ export class TrackerPlugin {
 
         // Create Available bot
         // should be designated to a server, because we will be sharing proxy across servers
+    }
+
+    /**
+     * Wrapper method for sending requests to our API. See `HttpClient#request`.
+     */
+    private api(method: Method, path: string, data?: unknown, headers: RequestHeaders = {}): Promise<string> {
+        if (!ENV.Tracker.API) {
+            return Promise.resolve("API is not enabled");
+        }
+
+        return HttpClient.request(
+            method,
+            ENV.URL.API + path,
+            { authkey: ENV.Authkey.Realms },
+            null,
+            undefined,
+            headers
+        );
     }
 }
 
