@@ -31,4 +31,8 @@ export class Realm extends Portal implements IRealm {
         realm.updatedTime = getTimestamp();
         return realm;
     }
+
+    public toString(): string {
+        return `${this.server.name} ${this.name} (#${this.objectID})`;
+    }
 }

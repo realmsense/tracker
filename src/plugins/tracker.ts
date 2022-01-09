@@ -3,7 +3,6 @@ import TypedEmitter from "typed-emitter";
 import { Method } from "axios";
 import { Plugin, Runtime, Client, Logger, LogLevel, Player, HttpClient, RequestHeaders } from "nrelay";
 import { DedicatedBot, KeyPop, Realm } from ".";
-import TrackerConfig from "./tracker/config/tracker-config.json";
 import { ENV } from "@realmsense/shared";
 
 @Plugin({
@@ -43,9 +42,7 @@ export class TrackerPlugin {
         this.players = [];
         this.bots = {};
 
-        this.api("DELETE", "/tracker/realms", null)
-            .then((value) => Logger.log("Tracker|API", "Deleted all realms (startup)", LogLevel.Info))
-            .catch((reason) => Logger.log("Tracker|API", `Failed to Delete all realms on startup: ${reason.response.data.message} (${reason.response.d.statusCode} ${reason.response.data.error})`, LogLevel.Error));
+        this.api("Delete realms (startup)", "DELETE", "/tracker/realms", null);
     }
 
     public addRealm(realm: Realm): void {
@@ -58,11 +55,7 @@ export class TrackerPlugin {
 
         this.realms.push(realm);
         this.emitter.emit("realmOpen", realm);
-        Logger.log("Tracker", `Added realm: ${realm.name}`, LogLevel.Debug);
-
-        this.api("PUT", "/tracker/realms", realm, { "Content-Type": "application/json" })
-            .then((value) => Logger.log("Tracker|API", `Added realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
-            .catch((reason) => Logger.log("Tracker|API", `Failed to Add realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
+        this.api(`Add realm ${realm.toString()}`, "PUT", "/tracker/realms", realm, { "Content-Type": "application/json" })
 
         // TODO: call method to get an available bot to connect to the realm to track events / get IP address
         // if no available bots are available, add to realmQueue
@@ -77,11 +70,7 @@ export class TrackerPlugin {
 
         this.realms[index].parseObjectStatus(realm.status);
         this.emitter.emit("realmUpdate", realm);
-        Logger.log("Tracker", `Updated realm: ${realm.name}`, LogLevel.Debug);
-
-        this.api("PATCH", "/tracker/realms", realm, { "Content-Type": "application/json" })
-            .then((value) => Logger.log("Tracker|API", `Updated realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
-            .catch((reason) => Logger.log("Tracker|API", `Failed to Update realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
+        this.api(`Update realm ${realm.toString()}`, "PATCH", "/tracker/realms", realm, { "Content-Type": "application/json" })
     }
 
     public removeRealm(realm: Realm): void {
@@ -93,11 +82,7 @@ export class TrackerPlugin {
 
         this.realms.slice(index, 1);
         this.emitter.emit("realmClose", realm);
-        Logger.log("Tracker", `Removed realm: ${realm.name}`, LogLevel.Debug);
-
-        this.api("DELETE", "/tracker/realms", realm, { "Content-Type": "application/json" })
-            .then((value) => Logger.log("Tracker|API", `Deleted realm (ObjectID: ${realm.objectID})`, LogLevel.Info))
-            .catch((reason) => Logger.log("Tracker|API", `Failed to Delete realm: ${reason.response.data.message} (${reason.response.data.statusCode} ${reason.response.data.error})`, LogLevel.Error));
+        this.api(`Delete realm ${realm.toString()}`, "DELETE", "/tracker/realms", realm, { "Content-Type": "application/json" })
     }
 
     public addPlayer(player: Player): void {
@@ -188,19 +173,30 @@ export class TrackerPlugin {
     /**
      * Wrapper method for sending requests to our API. See `HttpClient#request`.
      */
-    private api(method: Method, path: string, data?: unknown, headers: RequestHeaders = {}): Promise<string> {
+    private async api(logMessage: string, method: Method, path: string, data?: unknown, headers: RequestHeaders = {}): Promise<boolean> {
         if (!ENV.Tracker.API) {
-            return Promise.resolve("API is not enabled");
+            Logger.log("Tracker", `${logMessage} (API disabled)`, LogLevel.Info);
+            return true;
         }
 
-        return HttpClient.request(
+        const request = HttpClient.request(
             method,
             ENV.URL.API + path,
             { authkey: ENV.Authkey.Realms },
-            null,
+            data,
             undefined,
             headers
         );
+
+        return request
+            .then((value) => {
+                Logger.log("Tracker|API", `Success "${logMessage}". Response: "${value}"`, LogLevel.Message);
+                return true;
+            })
+            .catch((err) => {
+                Logger.log("Tracker|API", `Failed to "${logMessage}". Response: "${err.message}". Message: "${err?.response?.data?.message}`, LogLevel.Error);
+                return false;
+            })
     }
 }
 
