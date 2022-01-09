@@ -55,7 +55,7 @@ export class TrackerPlugin {
 
         this.realms.push(realm);
         this.emitter.emit("realmOpen", realm);
-        this.api(`Add realm ${realm.toString()}`, "PUT", "/tracker/realms", realm, { "Content-Type": "application/json" })
+        this.api(`Add realm ${realm.toString()}`, "PUT", "/tracker/realms", realm, { "Content-Type": "application/json" });
 
         // TODO: call method to get an available bot to connect to the realm to track events / get IP address
         // if no available bots are available, add to realmQueue
@@ -70,7 +70,7 @@ export class TrackerPlugin {
 
         this.realms[index].parseObjectStatus(realm.status);
         this.emitter.emit("realmUpdate", realm);
-        this.api(`Update realm ${realm.toString()}`, "PATCH", "/tracker/realms", realm, { "Content-Type": "application/json" })
+        this.api(`Update realm ${realm.toString()}`, "PATCH", "/tracker/realms", realm, { "Content-Type": "application/json" });
     }
 
     public removeRealm(realm: Realm): void {
@@ -82,7 +82,7 @@ export class TrackerPlugin {
 
         this.realms.slice(index, 1);
         this.emitter.emit("realmClose", realm);
-        this.api(`Delete realm ${realm.toString()}`, "DELETE", "/tracker/realms", realm, { "Content-Type": "application/json" })
+        this.api(`Delete realm ${realm.toString()}`, "DELETE", "/tracker/realms", realm, { "Content-Type": "application/json" });
     }
 
     public addPlayer(player: Player): void {
@@ -159,7 +159,7 @@ export class TrackerPlugin {
                 client.reconnectCooldown = 5000;
                 client.account.autoConnect = false;
                 client.disconnect();
-            };
+            }
 
             client.connectToServer(server);
             this.currentServerIndex++;
@@ -196,7 +196,7 @@ export class TrackerPlugin {
             .catch((err) => {
                 Logger.log("Tracker|API", `Failed to "${logMessage}". Response: "${err.message}". Message: "${err?.response?.data?.message}`, LogLevel.Error);
                 return false;
-            })
+            });
     }
 }
 
