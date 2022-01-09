@@ -47,9 +47,14 @@ export class DedicatedBot {
         await delay(1000);
         this.client.pathfinding.findPath(realmsPos);
 
-        this.client.pathfinding.emitter.once("arrived", async (point: Point) => {
-            await delay(5000);
-            this.client.pathfinding.moveTo(realmsPos);
+        this.client.pathfinding.emitter.once("noPath", () => {
+            Logger.log("Tracker", `Dedicated Bot "${this.client.account.guid} has no path to realms!`);
+            return;
+        });
+        
+        this.client.pathfinding.emitter.once("arrived", () => {
+            Logger.log("Tracker", `Dedicated Bot "${this.client.account.guid} arrived at realms`);
+            return;
         });
     }
 

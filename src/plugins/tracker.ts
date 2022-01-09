@@ -144,9 +144,9 @@ export class TrackerPlugin {
 
         const serverList = this.runtime.serverList;
 
-        if (this.currentServerIndex >= serverList.length) {
+        if (this.currentServerIndex >= serverList.servers.length) {
             if (!this.allServersTracked) {
-                Logger.log("Tracker", `All server nexuses are tracked (${serverList.length})`, LogLevel.Success);
+                Logger.log("Tracker", `All server nexuses are tracked (${serverList.servers.length})`, LogLevel.Success);
                 this.allServersTracked = true;
                 this.currentServerIndex = 0; // restart counter, to assign available bots
             }
@@ -155,7 +155,7 @@ export class TrackerPlugin {
 
         // Create Dedicated bot
         if (!this.allServersTracked) {
-            const server = serverList[this.currentServerIndex];
+            const server = serverList.servers[this.currentServerIndex];
             const dedicatedBot = new DedicatedBot(this, client);
 
             this.bots[server.name] = {
@@ -165,16 +165,16 @@ export class TrackerPlugin {
 
             Logger.log(
                 "Tracker",
-                `Assigning client "${client.account.guid}" to track ${server.name} nexus. (${this.currentServerIndex + 1}/${serverList.length})`,
+                `Assigning client "${client.account.guid}" to track ${server.name} nexus. (${this.currentServerIndex + 1}/${serverList.servers.length})`,
                 LogLevel.Warning
             );
 
-            if (TrackerConfig.debug.enabled) return;
-
             // Make sure we aren't connecting to the default server
-            client.reconnectCooldown = 5000;
-            client.account.autoConnect = false;
-            client.disconnect();
+            if (client.account.autoConnect) {
+                client.reconnectCooldown = 5000;
+                client.account.autoConnect = false;
+                client.disconnect();
+            };
 
             client.connectToServer(server);
             this.currentServerIndex++;

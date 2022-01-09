@@ -1,4 +1,4 @@
-import { Server, Portal, timestamp } from "nrelay";
+import { Server, Portal, getTimestamp } from "nrelay";
 import { IRealm } from "@realmsense/shared";
 
 export class Realm extends Portal implements IRealm {
@@ -28,7 +28,7 @@ export class Realm extends Portal implements IRealm {
         realm.players     = parseInt(match[2]);
         realm.maxPlayers  = parseInt(match[3]);
         realm.queue       = (match[4] ? parseInt(match[4]) : 0);
-        realm.updatedTime = timestamp();
+        realm.updatedTime = getTimestamp();
         return realm;
     }
 }
