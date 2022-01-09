@@ -23,9 +23,9 @@
                 "${workspaceFolder}/nrelay/realmlib/dist/**/*.js",
 
                 // if submodules are linked using mklink /J
-                "${workspaceFolder}\\dist\\**\\*.js",
-                "${workspaceFolder}\\..\\nrelay\\dist\\**\\*.js",
-                "${workspaceFolder}\\..\\realmlib\\dist\\**\\*.js",
+                "${workspaceFolder}/dist/**/*.js",
+                "${workspaceFolder}/../nrelay/dist/**/*.js",
+                "${workspaceFolder}/../realmlib/dist/**/*.js",
             ],
             "console": "integratedTerminal",
         }
