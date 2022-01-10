@@ -42,7 +42,7 @@ export class TrackerPlugin {
         this.players = [];
         this.bots = {};
 
-        this.api("Delete realms (startup)", "DELETE", "/tracker/realms", null);
+        void this.api("Delete realms (startup)", "DELETE", "/tracker/realms", null);
     }
 
     public addRealm(realm: Realm): void {
@@ -55,7 +55,7 @@ export class TrackerPlugin {
 
         this.realms.push(realm);
         this.emitter.emit("realmOpen", realm);
-        this.api(`Add realm ${realm.toString()}`, "PUT", "/tracker/realms", realm, { "Content-Type": "application/json" });
+        void this.api(`Add realm ${realm.toString()}`, "PUT", "/tracker/realms", realm, { "Content-Type": "application/json" });
 
         // TODO: call method to get an available bot to connect to the realm to track events / get IP address
         // if no available bots are available, add to realmQueue
@@ -70,7 +70,7 @@ export class TrackerPlugin {
 
         this.realms[index].parseObjectStatus(realm.status);
         this.emitter.emit("realmUpdate", realm);
-        this.api(`Update realm ${realm.toString()}`, "PATCH", "/tracker/realms", realm, { "Content-Type": "application/json" });
+        void this.api(`Update realm ${realm.toString()}`, "PATCH", "/tracker/realms", realm, { "Content-Type": "application/json" });
     }
 
     public removeRealm(realm: Realm): void {
@@ -82,7 +82,7 @@ export class TrackerPlugin {
 
         this.realms.slice(index, 1);
         this.emitter.emit("realmClose", realm);
-        this.api(`Delete realm ${realm.toString()}`, "DELETE", "/tracker/realms", realm, { "Content-Type": "application/json" });
+        void this.api(`Delete realm ${realm.toString()}`, "DELETE", "/tracker/realms", realm, { "Content-Type": "application/json" });
     }
 
     public addPlayer(player: Player): void {

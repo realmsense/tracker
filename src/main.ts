@@ -16,4 +16,4 @@ const options: RunOptions = {
     debug: true
 };
 
-Runtime.start(options);
+void Runtime.start(options);
