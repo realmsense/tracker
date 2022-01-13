@@ -182,7 +182,7 @@ export class TrackerPlugin {
         const request = HttpClient.request(
             method,
             ENV.URL.API + path,
-            { authkey: ENV.Authkey.Realms },
+            { authkey: ENV.Authkey.TrackerPlugin },
             data,
             undefined,
             headers
