@@ -1,13 +1,15 @@
-import { Client, CreateSuccessPacket, delay, Logger, LogLevel, PacketHook, Point, Portal, TextPacket } from "nrelay";
+import { Client, CreateSuccessPacket, delay, PacketHook, Point, Portal, TextPacket } from "nrelay";
 import { TrackerPlugin, Realm, KeyPop } from "..";
 import TrackerConfig from "./config/tracker-config.json";
+import { TrackerBot } from "./tracker-bot";
 
-export class DedicatedBot {
+export class DedicatedBot extends TrackerBot {
 
     constructor(
         public trackerPlugin: TrackerPlugin,
         public client: Client
     ) {
+        super(trackerPlugin, client, "Dedicated");
         this.trackerPlugin.runtime.pluginManager.hookInstance(client, this);
         
         // Portals
@@ -36,11 +38,7 @@ export class DedicatedBot {
     @PacketHook()
     private async onCreateSuccess(createSuccessPacket: CreateSuccessPacket): Promise<void> {
 
-        Logger.log(
-            "Tracker",
-            `Dedicated Bot "${this.client.account.guid}" connected to ${this.client.server.name} ${this.client.map.mapInfo.name}`,
-            LogLevel.Success
-        );
+        this.updateStatus("Ready", `Connected to ${this.client.server.name} ${this.client.map.mapInfo.name}`);
 
         const realmsPos = Point.fromArray(TrackerConfig.Locations.Realms);
 
@@ -48,12 +46,12 @@ export class DedicatedBot {
         this.client.pathfinding.findPath(realmsPos);
 
         this.client.pathfinding.emitter.once("noPath", () => {
-            Logger.log("Tracker", `Dedicated Bot "${this.client.account.guid} has no path to realms!`);
+            this.updateStatus("Error", "No path to realms!");
             return;
         });
         
         this.client.pathfinding.emitter.once("arrived", () => {
-            Logger.log("Tracker", `Dedicated Bot "${this.client.account.guid} arrived at realms`);
+            this.updateStatus("Ready", "Arrived at realms");
             return;
         });
     }

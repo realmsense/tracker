@@ -148,11 +148,7 @@ export class TrackerPlugin {
                 available: []
             };
 
-            Logger.log(
-                "Tracker",
-                `Assigning client "${client.account.guid}" to track ${server.name} nexus. (${this.currentServerIndex + 1}/${serverList.servers.length})`,
-                LogLevel.Warning
-            );
+            dedicatedBot.updateStatus("Waiting", `Logging in, tracking ${server.name} nexus. (${this.currentServerIndex + 1}/${serverList.servers.length})`);
 
             // Make sure we aren't connecting to the default server
             if (client.account.autoConnect) {
@@ -173,7 +169,7 @@ export class TrackerPlugin {
     /**
      * Wrapper method for sending requests to our API. See `HttpClient#request`.
      */
-    private async api(logMessage: string, method: Method, path: string, data?: unknown, headers: RequestHeaders = {}): Promise<boolean> {
+    public async api(logMessage: string, method: Method, path: string, data?: unknown, headers: RequestHeaders = {}): Promise<boolean> {
         if (!ENV.Tracker.API) {
             Logger.log("Tracker", `${logMessage} (API disabled)`, LogLevel.Info);
             return true;
