@@ -13,14 +13,14 @@ export class TrackerBot {
 
     public updateStatus(status: IBotStatus["status"], message: string): void {
         const botStatus: IBotStatus = {
-            guid: this.client.account.guid,
+            name: this.client.account.alias,
             message,
             status,
             time: new Date()
         };
 
         const logLevel = this.statusToLogLevel(status);
-        Logger.log("Tracker|Bot Status", `(${status.toUpperCase()}) ${botStatus.guid} (${this.type}): ${message}`, logLevel);
+        Logger.log("Tracker|Bot Status", `(${status.toUpperCase()}) ${botStatus.name} (${this.type}): ${message}`, logLevel);
 
         void this.trackerPlugin.api("Update Status", "PUT", "/logs/botStatus", botStatus);
     }
