@@ -43,6 +43,7 @@ export class TrackerPlugin {
         this.bots = {};
 
         void this.api("Delete realms (startup)", "DELETE", "/tracker/realms", null);
+        void this.api("Clear bot status (startup)", "DELETE", "/logs/botStatus", null);
     }
 
     public addRealm(realm: Realm): void {

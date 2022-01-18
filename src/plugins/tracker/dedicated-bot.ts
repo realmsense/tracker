@@ -39,10 +39,10 @@ export class DedicatedBot extends TrackerBot {
     private async onCreateSuccess(createSuccessPacket: CreateSuccessPacket): Promise<void> {
 
         this.updateStatus("Ready", `Connected to ${this.client.server.name} ${this.client.map.mapInfo.name}`);
-
-        const realmsPos = Point.fromArray(TrackerConfig.Locations.Realms);
-
+        
         await delay(1000);
+        const realmsPos = Point.fromArray(TrackerConfig.Locations.Realms);
+        this.updateStatus("Moving", `Walking to realms pos`);
         this.client.pathfinding.findPath(realmsPos);
 
         this.client.pathfinding.emitter.once("noPath", () => {
